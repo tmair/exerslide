@@ -347,7 +347,7 @@ describe('copyDir', () => {
     const emitter = copyDir({
       sourceDir: path.join(dir, '/source'),
       targetDir: path.join(dir, '/target'),
-      renameMap: {'dir2/file1': 'file2'},
+      renameMap: {['dir2' + path.sep + 'file1']: 'file2'},
     });
 
     emitter.once('finish', () => {

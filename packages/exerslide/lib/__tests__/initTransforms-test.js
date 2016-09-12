@@ -47,7 +47,7 @@ function test(exerslideConfig, webpackConfig, content, verify) {
       resourcePath: 'test.md',
       options: webpackConfig,
       async: () =>  (
-        (error, result) => verify(error, result.replace(/\n+\s*/g, ''))
+        (error, result) => verify(error, result.replace(/\n+\s*/g, '').replace(/\\\\/g, '\\'))
       ),
       emitWarning: () => {},
     },

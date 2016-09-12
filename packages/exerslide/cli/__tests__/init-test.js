@@ -9,8 +9,9 @@
 'use strict';
 
 const childProcess = require('child_process');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
+const os = require('os');
 const testUtils = require('../../scripts/test-utils');
 
 function run(args, cwd) {
@@ -43,24 +44,26 @@ function prepareWorkingDirectory(dir) {
 
 describe('exerslide init', () => {
 
-  it('passes "name" to the scaffolder', () => {
-    // Prepare directory
-    // It needs to have exerslide linked in, otherwise it will try to install it
-    // which we don't want.
-    const dir = testUtils.makeDirectoryStructure({});
-    prepareWorkingDirectory(dir);
-    return run(['foo'], dir)
-      .then(() => {
-        testUtils.validateFolderStructure(
-          dir,
-          {
-            'css': {
-              'foo.css': '',
-            },
-          }
-        );
-      });
-  });
+  if (os.platform() !== 'win32') {
+    it('passes "name" to the scaffolder', () => {
+      // Prepare directory
+      // It needs to have exerslide linked in, otherwise it will try to install it
+      // which we don't want.
+      const dir = testUtils.makeDirectoryStructure({});
+      prepareWorkingDirectory(dir);
+      return run(['foo'], dir)
+        .then(() => {
+          testUtils.validateFolderStructure(
+            dir,
+            {
+              'css': {
+                'foo.css': '',
+              },
+            }
+          );
+        });
+    });
+  }
 
 });
 

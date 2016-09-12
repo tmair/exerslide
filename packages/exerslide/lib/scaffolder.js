@@ -54,15 +54,24 @@ module.exports = function scaffolder(targetDir, options, done) {
   if (pathExists(path.join(targetDir, 'exerslide.config.js'))) {
     // We already initialized this directory, so we don't need to copy some
     // files again.
+    let pathSep;
+    if (path.sep === '\\') {
+      pathSep = '\\\\';
+    } else if (path.sep === '/'){
+      pathSep = '\/';
+    } else {
+      pathSep = path.sep;
+    }
+
     filesToIgnore.push(
-      /\/slides\//,
+      new RegExp(pathSep + 'slides' + pathSep),
       /references.yml$/,
-      /css\/style.css$/
+      new RegExp('css' + pathSep + 'style.css')
     );
   }
 
   const renameMap = {
-    'css/style.css': options.name + '.css',
+    ['css' + path.sep +'style.css']: options.name + '.css',
   };
 
   function transform(sourcePath, targetPath, contents) {

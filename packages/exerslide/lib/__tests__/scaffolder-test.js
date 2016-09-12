@@ -26,13 +26,11 @@ describe('scaffolder', () => {
       {name: 'test', confirm: false},
       function() {
         const targetDirFiles = globby.sync(path.join(dir, '**/*'))
-          .map(p => p.replace(dir, ''));
+          .map(p => path.relative(dir, p));
         const scaffoldingFiles =
           globby.sync(path.join(SCAFFOLDING_PATH, '**/*'))
             .filter(p => p.indexOf('__tests__') === -1)
-            .map(p => p.replace(/style\.css$/, 'test.css')
-                       .replace(SCAFFOLDING_PATH, '')
-            );
+            .map(p => path.relative(SCAFFOLDING_PATH, p.replace(/style\.css$/, 'test.css')));
 
         expect(targetDirFiles).to.not.be.empty;
         expect(targetDirFiles).to.include.members(scaffoldingFiles);
